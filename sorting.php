@@ -48,8 +48,36 @@ function bubbleSort($nums = [])
     return $nums;
 }
 
+/**
+ * Implements the insertion sort algorithm
+ * Time complexity = O(n^2)
+ *
+ * @param array $nums
+ * @return array
+ */
 function insertionSort($nums = [])
 {
+    // loop through nums from i = 1 to size of nums
+    for($i = 1; $i < sizeof($nums); $i++){
+
+        // set our key
+        $key = $nums[$i];
+
+        // set previous compareIndex = i - 1;
+        $compareIndex = $i - 1;
+
+        // now loop to check all previous elements while compareIndex >= 0 and key > nums[compareIndex]
+        while($compareIndex >= 0 && $nums[$compareIndex] > $key){
+
+            // swap compareIndex with compareIndex + 1 elements
+            $nums = swap($compareIndex, $compareIndex + 1, $nums);
+
+            // decrement compareIndex
+            $compareIndex--;
+        }
+    }
+
+    return $nums;
 }
 
 function mergeSort($nums = [])
@@ -79,13 +107,19 @@ foreach ($tests as $test_case) {
     $accepted_value = '[' . implode(',', $test_case['accepted']) . ']';
 
     // test bubble sort
+    $bubble_sort_test = bubbleSort($test_case['test']);
     print 'Testing bubbleSort('.$test_value.') => ' . $accepted_value;
     print "\n";
-    print "result=" . (bubbleSort($test_case['test']) === $test_case['accepted'] ? 'Passed' : 'Failed');
+    print "result=" . ($bubble_sort_test === $test_case['accepted'] ? 'Passed' : 'Failed with ' . print_r($bubble_sort_test, true) );
     print "\n\n";
 
     // test merge sort
 
     // test insertion sort
+    $insertion_sort_test = insertionSort($test_case['test']);
+    print 'Testing insertionSort('.$test_value.') => ' . $accepted_value;
+    print "\n";
+    print "result=" . ($insertion_sort_test === $test_case['accepted'] ? 'Passed' : 'Failed with ' . print_r($insertion_sort_test, true));
+    print "\n\n";
 
 }
