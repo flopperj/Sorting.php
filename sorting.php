@@ -230,17 +230,21 @@ function partition(&$nums, $lo, $hi)
  */
 function quickSort(&$nums, $lo, $hi)
 {
+    // we only care to perform quick sort when nums array has more than 1 element
     if (sizeof($nums) > 1) {
         $pivot = partition($nums, $lo, $hi);
 
+        // recursively run quickSort on left side of pivot
         if ($lo < $pivot - 1) {
             quickSort($nums, $lo, $pivot - 1);
         }
 
+        // recursively run quick sort on right side of pivot
         if ($pivot < $hi) {
             quickSort($nums, $pivot, $hi);
         }
     }
+
     return $nums;
 }
 
