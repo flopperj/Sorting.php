@@ -1,6 +1,8 @@
 <?php
 /**
  * Swaps content in array given start and end indexes
+ * Time complexity = O(1)
+ *
  * @param int $start
  * @param int $end
  * @param array $arr
@@ -160,6 +162,88 @@ function mergeSort($nums = [])
     );
 }
 
+/**
+ * Partition helper implementation for quick sort algorithm
+ * Time complexity = O(n)
+ *
+ * @param $nums
+ * @param $lo
+ * @param $hi
+ * @return mixed
+ */
+function partition(&$nums, $lo, $hi)
+{
+
+    // find mid point of nums to use as pivot
+    $mid = floor(($lo + $hi) / 2);
+
+    // initialize our pivot as mid point of our array
+    $pivot = $nums[$mid];
+
+    // initialize left pointer i = lo
+    $i = $lo;
+
+    // initialize right pointer j = hi
+    $j = $hi;
+
+    // while i <= j, we want to makes sure that we move all value less than pivot to the left
+    // and all values greater than pivot to the right
+    while ($i <= $j) {
+
+        // while element at nums[i] < pivot increment left pointer
+        while ($nums[$i] < $pivot) {
+            $i++;
+        }
+
+        // while element at nums[j] > pivot decrement right pointer
+        while ($nums[$j] > $pivot) {
+            $j--;
+        }
+
+
+        // if left pointer is lesser or equal to right pointer swap elements
+        if ($i <= $j) {
+
+            // swap elements at i and j
+            $nums = $i != $j ? swap($i, $j, $nums) : $nums;
+
+            // increment left pointer
+            $i++;
+
+            // decrement right pointer
+            $j--;
+        }
+    }
+
+    // return i since it'll be index of our sorted position
+    return $i;
+}
+
+/**
+ * Implementation of the quick sort algorithm
+ * Time complexity = O(nlogn) avg
+ *                 = O(n^2) worst case
+ * @param $nums
+ * @param $lo
+ * @param $hi
+ * @return mixed
+ */
+function quickSort(&$nums, $lo, $hi)
+{
+    if (sizeof($nums) > 1) {
+        $pivot = partition($nums, $lo, $hi);
+
+        if ($lo < $pivot - 1) {
+            quickSort($nums, $lo, $pivot - 1);
+        }
+
+        if ($pivot < $hi) {
+            quickSort($nums, $pivot, $hi);
+        }
+    }
+    return $nums;
+}
+
 // TEST CASES
 $tests = [
     [
@@ -201,6 +285,13 @@ foreach ($tests as $test_case) {
     print 'Testing insertionSort(' . $test_value . ') => ' . $accepted_value;
     print "\n";
     print "result=" . ($insertion_sort_test === $test_case['accepted'] ? 'Passed' : 'Failed with ' . print_r($insertion_sort_test, true));
+    print "\n\n";
+
+    // test quick sort
+    $quick_sort_test = quickSort($test_case['test'], 0, sizeof($test_case['test']) - 1);
+    print 'Testing quickSort(' . $test_value . ') => ' . $accepted_value;
+    print "\n";
+    print "result=" . ($quick_sort_test === $test_case['accepted'] ? 'Passed' : 'Failed with ' . print_r($quick_sort_test, true));
     print "\n\n";
 
 }
